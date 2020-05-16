@@ -1,0 +1,21 @@
+.ball {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	/* background: #a2a4a6; */
+	background-image: linear-gradient(to bottom, #616661 65%, #525452);
+	top: calc(100% - 100px);
+	left: calc(50% - 50px);
+	position: relative;
+	box-shadow: -2px 4px 8px #6b6e6b;
+}
+
+.gameFrame {
+	height: 80%;
+	width: 100%;
+	max-width: 100%;
+	position: absolute;
+	/* border: 2px red dotted; */
+	border-width: 5px;
+	background-image: linear-gradient(to bottom, #d7ded7 25%, #f5f7f5);
+}
