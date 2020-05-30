@@ -1,0 +1,13 @@
+.fallingObject {
+	height: 150px;
+	width: 30px;
+	border-radius: 2%;
+	/* background: #a2a4a6; */
+	background-image: linear-gradient(to bottom, #f2320c 65%, #e82802);
+
+	position: absolute;
+	box-shadow: -2px 4px 8px #6b6e6b;
+
+	z-index: 1;
+	left: 55px;
+}

@@ -5,8 +5,9 @@
 	/* background: #a2a4a6; */
 	background-image: linear-gradient(to bottom, #616661 65%, #525452);
 	top: calc(100% - 100px);
+	/* top: calc(80% - 100px); */
 	left: calc(50% - 50px);
-	position: relative;
+	position: absolute;
 	box-shadow: -2px 4px 8px #6b6e6b;
 }
 
@@ -18,4 +19,5 @@
 	/* border: 2px red dotted; */
 	border-width: 5px;
 	background-image: linear-gradient(to bottom, #d7ded7 25%, #f5f7f5);
+	overflow: hidden;
 }
