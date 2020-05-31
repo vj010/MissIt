@@ -1,5 +1,5 @@
 .fallingObject {
-	height: 150px;
+	height: 120px;
 	width: 30px;
 	border-radius: 2%;
 	/* background: #a2a4a6; */
@@ -7,6 +7,8 @@
 
 	position: absolute;
 	box-shadow: -2px 4px 8px #6b6e6b;
+
+	bottom: 100%;
 
 	z-index: 1;
 	left: 55px;

@@ -1,34 +1,31 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { throttle } from '../../Utilities';
 import FallingObjects from '../FallingObjects/FallingObjects';
-import './GamePage.css';
-function GamePage(props) {
+import './GameArea.css';
+function GameArea(props) {
 	let ballRef = useRef();
 	let gamePageRef = useRef();
+	const [fallingObjects, insertFallingObjects] = useState([]);
 
-	const [fallingObjects, setFallingObjects] = useState([]);
-	const [addFallingObject, setAddFallingObject] = useState([0]);
-
-	function destroyFallingObject(ind) {
-		let newFallingObjects = fallingObjects.filter((val, index) => index != ind);
-		setFallingObjects([...newFallingObjects]);
-	}
+	let fallingObjectsArr = [];
 
 	useEffect(() => {
-		setTimeout(() => {
-			setFallingObjects([
-				...fallingObjects,
+		for (let i = 0; i < parseInt(gamePageRef.current.offsetWidth / (2 * ballRef.current.offsetWidth)); i++) {
+			fallingObjectsArr.push(
 				<FallingObjects
 					container={gamePageRef}
 					collisionObject={ballRef}
-					key={fallingObjects.length}
-					selfDestruct={destroyFallingObject}
-					index={fallingObjects.length}
-				/>,
-			]);
-			setAddFallingObject([(addFallingObject[0] + 1) % 2]);
-		}, 1000);
-	}, addFallingObject);
+					key={fallingObjectsArr.length}
+					index={fallingObjectsArr.length}
+					delay={(i * 1000) % 1500}
+					slot={i}
+					slotWidth={2 * ballRef.current.offsetWidth}
+					slotMargin={ballRef.current.offsetWidth}
+				/>
+			);
+		}
+		insertFallingObjects(fallingObjectsArr);
+	}, []);
 
 	function ballMotionHandler(e) {
 		e.persist();
@@ -60,4 +57,4 @@ function GamePage(props) {
 	);
 }
 
-export default GamePage;
+export default GameArea;

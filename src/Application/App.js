@@ -1,9 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Routes from './Routes/Routes';
-import GamePage from '../Components/GamePage/GamePage';
+import GameContainer from '../Components/GameContainer/GameContainer';
 function App(props) {
-	return <GamePage />;
+	return <GameContainer />;
 }
 
 export default App;
