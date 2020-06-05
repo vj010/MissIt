@@ -33,3 +33,7 @@ export function checkCollision(firstElement, secondElement) {
 	}
 	return false;
 }
+
+export function getRandomNumber(min, max, includeMax) {
+	return Math.floor(Math.random() * (max - min + includeMax)) + min;
+}

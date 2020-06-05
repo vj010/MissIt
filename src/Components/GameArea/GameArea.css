@@ -12,10 +12,12 @@
 }
 
 .gameFrame {
+	/* display: inline-block; */
+	float: left;
 	height: 80%;
-	width: 100%;
+	width: 70%;
 	max-width: 100%;
-	position: absolute;
+	position: relative;
 	/* border: 2px red dotted; */
 	border-width: 5px;
 	background-image: linear-gradient(to bottom, #d7ded7 25%, #f5f7f5);

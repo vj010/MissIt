@@ -1,19 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { throttle } from '../../Utilities';
 import FallingObjects from '../FallingObjects/FallingObjects';
+import EnergyMeter from '../EnergyMeter/EnergyMeter';
+import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import './GameArea.css';
 function GameArea(props) {
 	let ballRef = useRef();
-	let gamePageRef = useRef();
+	let gameAreaRef = useRef();
 	const [fallingObjects, insertFallingObjects] = useState([]);
 
 	let fallingObjectsArr = [];
 
 	useEffect(() => {
-		for (let i = 0; i < parseInt(gamePageRef.current.offsetWidth / (2 * ballRef.current.offsetWidth)); i++) {
+		for (let i = 0; i < parseInt(gameAreaRef.current.offsetWidth / (2 * ballRef.current.offsetWidth)); i++) {
 			fallingObjectsArr.push(
 				<FallingObjects
-					container={gamePageRef}
+					container={gameAreaRef}
 					collisionObject={ballRef}
 					key={fallingObjectsArr.length}
 					index={fallingObjectsArr.length}
@@ -35,7 +37,7 @@ function GameArea(props) {
 		function moveBall(timeStamp) {
 			if (
 				event.keyCode === 39 &&
-				ballRef.current.offsetLeft + ballRef.current.offsetWidth + speed < gamePageRef.current.offsetWidth
+				ballRef.current.offsetLeft + ballRef.current.offsetWidth + speed < gameAreaRef.current.offsetWidth
 			) {
 				ballRef.current.style.left = ballRef.current.offsetLeft + speed + 'px';
 			} else if (event.keyCode === 37 && ballRef.current.offsetLeft > 0) {
@@ -48,12 +50,15 @@ function GameArea(props) {
 	}
 
 	return (
-		<div ref={gamePageRef} tabIndex="0" className="gameFrame" onKeyDown={throttle(ballMotionHandler, 3)}>
-			{/* <FallingObjects container={gamePageRef} collisionObject={ballRef} /> */}
-			{fallingObjects}
+		<React.Fragment>
+			<EnergyMeter />
+			<div ref={gameAreaRef} tabIndex="0" className="gameFrame" onKeyDown={throttle(ballMotionHandler, 3)}>
+				{fallingObjects}
 
-			<div ref={ballRef} className="ball"></div>
-		</div>
+				<div ref={ballRef} className="ball"></div>
+			</div>
+			<ScoreBoard />
+		</React.Fragment>
 	);
 }
 

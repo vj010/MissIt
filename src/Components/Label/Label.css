@@ -1,0 +1,14 @@
+.label {
+	font-family: 'Comic Sans MS', cursive, sans-serif;
+	position: relative;
+	font-size: x-large;
+	color: #38542f;
+	text-shadow: 2px 2px 5px #737572;
+	display: block;
+	margin-top: 20%;
+	height: 10%;
+	width: 100%;
+	/* left: 10%; */
+	position: relative;
+	text-align: center;
+}

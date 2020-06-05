@@ -1,0 +1,47 @@
+.energy-meter {
+	/* display: inline-block; */
+	float: left;
+	/* top: 10%; */
+	height: 80%;
+	width: 15%;
+	/* background-color: red; */
+	/* border: 5px dotted blue; */
+	position: relative;
+}
+
+.power-level-1 {
+	display: block;
+	margin-top: 2%;
+	height: 3%;
+	width: 80%;
+	left: 10%;
+	background-color: green;
+	position: relative;
+	border-radius: 35%;
+}
+
+.power-level-2 {
+	display: block;
+	margin-top: 2%;
+	height: 3%;
+	width: 70%;
+	left: 15%;
+	background-color: yellow;
+	position: relative;
+	border-radius: 35%;
+}
+
+.power-level-3 {
+	display: block;
+	margin-top: 2%;
+	height: 3%;
+	width: 60%;
+	left: 20%;
+	background-color: red;
+	position: relative;
+	border-radius: 35%;
+}
+
+.first-power-level {
+	margin-top: 5%;
+}
