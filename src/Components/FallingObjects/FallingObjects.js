@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { checkCollision, getRandomNumber } from '../../Utilities';
 import './FallingObjects.css';
 
@@ -20,7 +20,7 @@ const FallingObjects = React.forwardRef((props, ref) => {
 		function fall(timestamp) {
 			if (fallingObjRef.current && gamePageRef.current)
 				if (fallingObjRef.current.offsetTop <= gamePageRef.current.offsetHeight) {
-					fallingObjRef.current.style.top = fallingObjRef.current.offsetTop + 2 + 'px';
+					fallingObjRef.current.style.top = fallingObjRef.current.offsetTop + props.stats.level * 2 + 'px';
 					if (checkCollision(fallingObjRef.current, collisionObject.current)) {
 						fallingObjRef.current.style.top = -1 * fallingObjRef.current.offsetHeight + 'px';
 						fallingObjRef.current.style.left =
@@ -29,6 +29,7 @@ const FallingObjects = React.forwardRef((props, ref) => {
 								props.slotWidth * props.slot + props.slotWidth - props.slotMargin,
 								0
 							) + 'px';
+						props.statBroadcaster({ type: 'DECREMENT_ENERGY' });
 						setTimeout(() => {
 							window.requestAnimationFrame(fall);
 						}, Math.random() * props.delay);
@@ -43,6 +44,7 @@ const FallingObjects = React.forwardRef((props, ref) => {
 							props.slotWidth * props.slot + props.slotWidth - props.slotMargin,
 							0
 						) + 'px';
+					props.statBroadcaster({ type: 'INCREMENT_SCORE' });
 					setTimeout(() => {
 						window.requestAnimationFrame(fall);
 					}, Math.random() * props.delay);

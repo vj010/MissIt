@@ -7,9 +7,9 @@ function ScoreBoard(props) {
 	return (
 		<div className="score-board">
 			<Label text="Score" />
-			<Stat text="4" />
+			<Stat text={props.stats.score} />
 			<Label text="Level" />
-			<Stat text="1" />
+			<Stat text={props.stats.level} />
 		</div>
 	);
 }

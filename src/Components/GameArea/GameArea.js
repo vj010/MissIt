@@ -1,28 +1,54 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { throttle } from '../../Utilities';
-import FallingObjects from '../FallingObjects/FallingObjects';
 import EnergyMeter from '../EnergyMeter/EnergyMeter';
+import FallingObjects from '../FallingObjects/FallingObjects';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import './GameArea.css';
-function GameArea(props) {
+
+const GameArea = React.memo((props) => {
 	let ballRef = useRef();
 	let gameAreaRef = useRef();
 	const [fallingObjects, insertFallingObjects] = useState([]);
 
+	let initialState = {
+		score: 0,
+		level: 1,
+		energy: 10,
+	};
+
+	const [stats, changeStats] = useReducer((state, action) => {
+		switch (action.type) {
+			case 'INCREMENT_SCORE':
+				return {
+					...state,
+					score: state.score + 1,
+					level: state.score && state.score % 100 == 0 ? state.level + 1 : state.level,
+				};
+				break;
+			case 'DECREMENT_ENERGY':
+				return { ...state, energy: state.energy - 1 };
+				break;
+			default:
+				return state;
+		}
+	}, initialState);
+
 	let fallingObjectsArr = [];
 
 	useEffect(() => {
-		for (let i = 0; i < parseInt(gameAreaRef.current.offsetWidth / (2 * ballRef.current.offsetWidth)); i++) {
+		for (let i = 0; i < parseInt(gameAreaRef.current.offsetWidth / (1.5 * ballRef.current.offsetWidth)); i++) {
 			fallingObjectsArr.push(
 				<FallingObjects
 					container={gameAreaRef}
 					collisionObject={ballRef}
 					key={fallingObjectsArr.length}
 					index={fallingObjectsArr.length}
-					delay={(i * 1000) % 1500}
+					delay={(i * 1000) % 1800}
 					slot={i}
 					slotWidth={2 * ballRef.current.offsetWidth}
 					slotMargin={ballRef.current.offsetWidth}
+					statBroadcaster={changeStats}
+					stats={stats}
 				/>
 			);
 		}
@@ -51,15 +77,15 @@ function GameArea(props) {
 
 	return (
 		<React.Fragment>
-			<EnergyMeter />
+			<EnergyMeter energyLevel={stats.energy} />
 			<div ref={gameAreaRef} tabIndex="0" className="gameFrame" onKeyDown={throttle(ballMotionHandler, 3)}>
 				{fallingObjects}
 
 				<div ref={ballRef} className="ball"></div>
 			</div>
-			<ScoreBoard />
+			<ScoreBoard stats={stats} />
 		</React.Fragment>
 	);
-}
+});
 
 export default GameArea;
