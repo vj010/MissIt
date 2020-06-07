@@ -1,8 +1,8 @@
 .score-board {
-	display: inline-block;
 	height: 80%;
 	width: 15%;
 	/* background-color: green; */
 	/* border: 5px dotted blue; */
-	position: absolute;
+	position: relative;
+	float: left;
 }

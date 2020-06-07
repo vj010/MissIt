@@ -3,6 +3,7 @@ import { throttle } from '../../Utilities';
 import EnergyMeter from '../EnergyMeter/EnergyMeter';
 import FallingObjects from '../FallingObjects/FallingObjects';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
+import { incrementGlobalSpeed } from '../../Application/Store';
 import './GameArea.css';
 
 const GameArea = React.memo((props) => {
@@ -14,15 +15,24 @@ const GameArea = React.memo((props) => {
 		score: 0,
 		level: 1,
 		energy: 10,
+		lastScore: 15,
 	};
+
+	let ballSpeed = 3;
 
 	const [stats, changeStats] = useReducer((state, action) => {
 		switch (action.type) {
 			case 'INCREMENT_SCORE':
+				let increaseSpeed = state.score == state.lastScore;
+				if (increaseSpeed) {
+					incrementGlobalSpeed();
+					ballSpeed = Math.min(15, ballSpeed + 2);
+				}
 				return {
 					...state,
 					score: state.score + 1,
-					level: state.score && state.score % 100 == 0 ? state.level + 1 : state.level,
+					level: increaseSpeed ? state.level + 1 : state.level,
+					lastScore: increaseSpeed ? state.lastScore + state.level * 2 * 10 : state.lastScore,
 				};
 				break;
 			case 'DECREMENT_ENERGY':
@@ -59,15 +69,14 @@ const GameArea = React.memo((props) => {
 		e.persist();
 		let limit = 0;
 		let event = e;
-		let speed = 3;
 		function moveBall(timeStamp) {
 			if (
 				event.keyCode === 39 &&
-				ballRef.current.offsetLeft + ballRef.current.offsetWidth + speed < gameAreaRef.current.offsetWidth
+				ballRef.current.offsetLeft + ballRef.current.offsetWidth + ballSpeed < gameAreaRef.current.offsetWidth
 			) {
-				ballRef.current.style.left = ballRef.current.offsetLeft + speed + 'px';
+				ballRef.current.style.left = ballRef.current.offsetLeft + ballSpeed + 'px';
 			} else if (event.keyCode === 37 && ballRef.current.offsetLeft > 0) {
-				ballRef.current.style.left = ballRef.current.offsetLeft - speed + 'px';
+				ballRef.current.style.left = ballRef.current.offsetLeft - ballSpeed + 'px';
 			}
 			limit++;
 			if (limit < 10) window.requestAnimationFrame(moveBall);

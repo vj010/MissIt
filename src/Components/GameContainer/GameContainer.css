@@ -6,3 +6,8 @@
 	/* background-color: aqua; */
 	/* border: 5px dotted red; */
 }
+
+.button-div {
+	position: relative;
+	top: 5%;
+}

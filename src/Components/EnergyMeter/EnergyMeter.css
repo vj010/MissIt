@@ -15,9 +15,8 @@
 	height: 3%;
 	width: 80%;
 	left: 10%;
-
 	position: relative;
-	border-radius: 35%;
+	border-radius: 50%;
 	border: 0.5px solid grey;
 }
 
@@ -27,9 +26,8 @@
 	height: 3%;
 	width: 70%;
 	left: 15%;
-
 	position: relative;
-	border-radius: 35%;
+	border-radius: 50%;
 	border: 0.5px solid grey;
 }
 
@@ -39,9 +37,8 @@
 	height: 3%;
 	width: 60%;
 	left: 20%;
-
 	position: relative;
-	border-radius: 35%;
+	border-radius: 50%;
 	border: 0.5px solid grey;
 }
 
