@@ -4,16 +4,16 @@ import EnergyMeter from '../EnergyMeter/EnergyMeter';
 import FallingObjects from '../FallingObjects/FallingObjects';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import { incrementGlobalSpeed } from '../../Application/Store';
+import { resetGlobalSpeed } from '../../Application/Store';
 import './GameArea.css';
 
-const GameArea = React.memo((props) => {
+const GameArea = React.memo(({ play }) => {
 	let ballRef = useRef();
 	let gameAreaRef = useRef();
 	const [fallingObjects, insertFallingObjects] = useState([]);
-
 	let initialState = {
 		score: 0,
-		level: 1,
+		level: 0,
 		energy: 10,
 		lastScore: 15,
 	};
@@ -36,7 +36,14 @@ const GameArea = React.memo((props) => {
 				};
 				break;
 			case 'DECREMENT_ENERGY':
+				state.energy === 0 ? insertFallingObjects([]) : '';
 				return { ...state, energy: state.energy - 1 };
+				break;
+			case 'SET_LEVEL':
+				return { ...state, level: 1 };
+				break;
+			case 'RESET':
+				return { ...initialState };
 				break;
 			default:
 				return state;
@@ -46,24 +53,33 @@ const GameArea = React.memo((props) => {
 	let fallingObjectsArr = [];
 
 	useEffect(() => {
-		for (let i = 0; i < parseInt(gameAreaRef.current.offsetWidth / (1.5 * ballRef.current.offsetWidth)); i++) {
-			fallingObjectsArr.push(
-				<FallingObjects
-					container={gameAreaRef}
-					collisionObject={ballRef}
-					key={fallingObjectsArr.length}
-					index={fallingObjectsArr.length}
-					delay={(i * 1000) % 1800}
-					slot={i}
-					slotWidth={2 * ballRef.current.offsetWidth}
-					slotMargin={ballRef.current.offsetWidth}
-					statBroadcaster={changeStats}
-					stats={stats}
-				/>
-			);
+		if (play) {
+			for (let i = 0; i < parseInt(gameAreaRef.current.offsetWidth / (1.5 * ballRef.current.offsetWidth)); i++) {
+				fallingObjectsArr.push(
+					<FallingObjects
+						container={gameAreaRef}
+						collisionObject={ballRef}
+						key={fallingObjectsArr.length}
+						index={fallingObjectsArr.length}
+						delay={(i * 1000) % 1800}
+						slot={i}
+						slotWidth={2 * ballRef.current.offsetWidth}
+						slotMargin={ballRef.current.offsetWidth}
+						statBroadcaster={changeStats}
+						stats={stats}
+					/>
+				);
+			}
+			insertFallingObjects(fallingObjectsArr);
+			changeStats({ type: 'SET_LEVEL' });
+			gameAreaRef.current.focus();
+		} else {
+			insertFallingObjects([]);
+			changeStats({ type: 'RESET' });
+			ballRef.current.style.left = gameAreaRef.current.offsetWidth / 2 - ballRef.current.offsetWidth / 2 + 'px';
 		}
-		insertFallingObjects(fallingObjectsArr);
-	}, []);
+		resetGlobalSpeed();
+	}, [play]);
 
 	function ballMotionHandler(e) {
 		e.persist();

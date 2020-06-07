@@ -5,3 +5,7 @@ export const globalSpeed = {
 export function incrementGlobalSpeed() {
 	globalSpeed.speed = Math.min(globalSpeed.speed + 2, 10);
 }
+
+export function resetGlobalSpeed() {
+	globalSpeed.speed = 2;
+}
