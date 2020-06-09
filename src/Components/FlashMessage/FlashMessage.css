@@ -1,0 +1,44 @@
+.flash-message {
+	position: absolute;
+	color: black;
+
+	/* transition: display 1s none; */
+	animation-duration: 3s;
+	font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.zoom-in {
+	animation-name: zoom-in;
+	font-size: xx-large;
+}
+
+@keyframes zoom-in {
+	0% {
+		font-size: xx-small;
+		opacity: 0;
+	}
+	80% {
+		font-size: xx-large;
+		opacity: 1;
+	}
+	100% {
+		font-size: xx-large;
+		opacity: 1;
+	}
+}
+
+.appear {
+	font-size: xx-large;
+	animation-fill-mode: forwards;
+	animation-name: appear-in;
+	animation-duration: 4s;
+}
+
+@keyframes appear-in {
+	0% {
+		top: 0%;
+	}
+	100% {
+		top: 30%;
+	}
+}

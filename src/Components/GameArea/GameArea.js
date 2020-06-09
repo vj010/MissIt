@@ -5,6 +5,7 @@ import FallingObjects from '../FallingObjects/FallingObjects';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import { incrementGlobalSpeed } from '../../Application/Store';
 import { resetGlobalSpeed } from '../../Application/Store';
+import FlashMessage from '../FlashMessage/FlashMessage';
 import './GameArea.css';
 
 const GameArea = React.memo(({ play }) => {
@@ -19,6 +20,8 @@ const GameArea = React.memo(({ play }) => {
 	};
 
 	let ballSpeed = 3;
+
+	const [showFlashMessage, setFlashMessageVisibility] = useState(false);
 
 	const [stats, changeStats] = useReducer((state, action) => {
 		switch (action.type) {
@@ -36,13 +39,17 @@ const GameArea = React.memo(({ play }) => {
 				};
 				break;
 			case 'DECREMENT_ENERGY':
-				state.energy === 0 ? insertFallingObjects([]) : '';
+				if (state.energy === 0) {
+					setFlashMessageVisibility(true);
+					insertFallingObjects([]);
+				}
 				return { ...state, energy: state.energy - 1 };
 				break;
 			case 'SET_LEVEL':
 				return { ...state, level: 1 };
 				break;
 			case 'RESET':
+				setFlashMessageVisibility(false);
 				return { ...initialState };
 				break;
 			default:
@@ -70,7 +77,12 @@ const GameArea = React.memo(({ play }) => {
 					/>
 				);
 			}
-			insertFallingObjects(fallingObjectsArr);
+			setFlashMessageVisibility(true);
+			setTimeout(() => {
+				insertFallingObjects(fallingObjectsArr);
+				setFlashMessageVisibility(false);
+			}, 2000);
+
 			changeStats({ type: 'SET_LEVEL' });
 			gameAreaRef.current.focus();
 		} else {
@@ -103,11 +115,24 @@ const GameArea = React.memo(({ play }) => {
 	return (
 		<React.Fragment>
 			<EnergyMeter energyLevel={stats.energy} />
-			<div ref={gameAreaRef} tabIndex="0" className="gameFrame" onKeyDown={throttle(ballMotionHandler, 3)}>
+			<div
+				ref={gameAreaRef}
+				tabIndex="0"
+				className="gameFrame"
+				onKeyDown={throttle(ballMotionHandler, 3)}
+				onKeyPress={throttle(ballMotionHandler, 3)}
+			>
 				{fallingObjects}
+
+				<FlashMessage
+					text={stats.energy < 0 ? 'Game Over' : 'Get Ready'}
+					animation={stats.energy < 0 ? 'appear' : 'zoom-in'}
+					style={{ top: '10%', left: '45%', display: showFlashMessage ? 'block' : 'none' }}
+				/>
 
 				<div ref={ballRef} className="ball"></div>
 			</div>
+
 			<ScoreBoard stats={stats} />
 		</React.Fragment>
 	);
